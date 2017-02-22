@@ -1,0 +1,283 @@
+{
+    "id": "",
+    "components": [],
+    "changes": [
+        {
+            "_provider": "$(datacenters.items.0.type)",
+            "_component": "vpc",
+            "_component_id": "vpc::query",
+            "_state": "waiting",
+            "_action": "find",
+            "tags": {
+                "ernest.service": "test-service"
+            },
+            "datacenter_type": "$(datacenters.items.0.type)",
+            "datacenter_region": "$(components.#[_component_id=\"credentials::aws\"].region)",
+            "aws_access_key_id": "$(components.#[_component_id=\"credentials::aws\"].aws_access_key_id)",
+            "aws_secret_access_key": "$(components.#[_component_id=\"credentials::aws\"].aws_secret_access_key)",
+            "service": ""
+        },
+        {
+            "_provider": "$(datacenters.items.0.type)",
+            "_component": "network",
+            "_component_id": "network::query",
+            "_state": "waiting",
+            "_action": "find",
+            "tags": {
+                "ernest.service": "test-service"
+            },
+            "datacenter_type": "$(datacenters.items.0.type)",
+            "datacenter_region": "$(components.#[_component_id=\"credentials::aws\"].region)",
+            "aws_access_key_id": "$(components.#[_component_id=\"credentials::aws\"].aws_access_key_id)",
+            "aws_secret_access_key": "$(components.#[_component_id=\"credentials::aws\"].aws_secret_access_key)",
+            "service": ""
+        },
+        {
+            "_provider": "$(datacenters.items.0.type)",
+            "_component": "instance",
+            "_component_id": "instance::query",
+            "_state": "waiting",
+            "_action": "find",
+            "tags": {
+                "ernest.service": "test-service"
+            },
+            "datacenter_type": "$(datacenters.items.0.type)",
+            "datacenter_region": "$(components.#[_component_id=\"credentials::aws\"].region)",
+            "aws_access_key_id": "$(components.#[_component_id=\"credentials::aws\"].aws_access_key_id)",
+            "aws_secret_access_key": "$(components.#[_component_id=\"credentials::aws\"].aws_secret_access_key)",
+            "service": ""
+        },
+        {
+            "_provider": "$(datacenters.items.0.type)",
+            "_component": "security_group",
+            "_component_id": "security_group::query",
+            "_state": "waiting",
+            "_action": "find",
+            "tags": {
+                "ernest.service": "test-service"
+            },
+            "datacenter_type": "$(datacenters.items.0.type)",
+            "datacenter_region": "$(components.#[_component_id=\"credentials::aws\"].region)",
+            "aws_access_key_id": "$(components.#[_component_id=\"credentials::aws\"].aws_access_key_id)",
+            "aws_secret_access_key": "$(components.#[_component_id=\"credentials::aws\"].aws_secret_access_key)",
+            "service": ""
+        },
+        {
+            "_provider": "$(datacenters.items.0.type)",
+            "_component": "nat_gateway",
+            "_component_id": "nat_gateway::query",
+            "_state": "waiting",
+            "_action": "find",
+            "tags": {
+                "ernest.service": "test-service"
+            },
+            "datacenter_type": "$(datacenters.items.0.type)",
+            "datacenter_region": "$(components.#[_component_id=\"credentials::aws\"].region)",
+            "aws_access_key_id": "$(components.#[_component_id=\"credentials::aws\"].aws_access_key_id)",
+            "aws_secret_access_key": "$(components.#[_component_id=\"credentials::aws\"].aws_secret_access_key)",
+            "service": ""
+        },
+        {
+            "_provider": "$(datacenters.items.0.type)",
+            "_component": "elb",
+            "_component_id": "elb::query",
+            "_state": "waiting",
+            "_action": "find",
+            "tags": {
+                "ernest.service": "test-service"
+            },
+            "datacenter_type": "$(datacenters.items.0.type)",
+            "datacenter_region": "$(components.#[_component_id=\"credentials::aws\"].region)",
+            "aws_access_key_id": "$(components.#[_component_id=\"credentials::aws\"].aws_access_key_id)",
+            "aws_secret_access_key": "$(components.#[_component_id=\"credentials::aws\"].aws_secret_access_key)",
+            "service": ""
+        },
+        {
+            "_provider": "$(datacenters.items.0.type)",
+            "_component": "ebs",
+            "_component_id": "ebs::query",
+            "_state": "waiting",
+            "_action": "find",
+            "tags": {
+                "ernest.service": "test-service"
+            },
+            "datacenter_type": "$(datacenters.items.0.type)",
+            "datacenter_region": "$(components.#[_component_id=\"credentials::aws\"].region)",
+            "aws_access_key_id": "$(components.#[_component_id=\"credentials::aws\"].aws_access_key_id)",
+            "aws_secret_access_key": "$(components.#[_component_id=\"credentials::aws\"].aws_secret_access_key)",
+            "service": ""
+        },
+        {
+            "_provider": "$(datacenters.items.0.type)",
+            "_component": "s3",
+            "_component_id": "s3::query",
+            "_state": "waiting",
+            "_action": "find",
+            "tags": {
+                "ernest.service": "test-service"
+            },
+            "datacenter_type": "$(datacenters.items.0.type)",
+            "datacenter_region": "$(components.#[_component_id=\"credentials::aws\"].region)",
+            "aws_access_key_id": "$(components.#[_component_id=\"credentials::aws\"].aws_access_key_id)",
+            "aws_secret_access_key": "$(components.#[_component_id=\"credentials::aws\"].aws_secret_access_key)",
+            "service": ""
+        },
+        {
+            "_provider": "$(datacenters.items.0.type)",
+            "_component": "route53",
+            "_component_id": "route53::query",
+            "_state": "waiting",
+            "_action": "find",
+            "tags": {
+                "ernest.service": "test-service"
+            },
+            "datacenter_type": "$(datacenters.items.0.type)",
+            "datacenter_region": "$(components.#[_component_id=\"credentials::aws\"].region)",
+            "aws_access_key_id": "$(components.#[_component_id=\"credentials::aws\"].aws_access_key_id)",
+            "aws_secret_access_key": "$(components.#[_component_id=\"credentials::aws\"].aws_secret_access_key)",
+            "service": ""
+        },
+        {
+            "_provider": "$(datacenters.items.0.type)",
+            "_component": "rds_instance",
+            "_component_id": "rds_instance::query",
+            "_state": "waiting",
+            "_action": "find",
+            "tags": {
+                "ernest.service": "test-service"
+            },
+            "datacenter_type": "$(datacenters.items.0.type)",
+            "datacenter_region": "$(components.#[_component_id=\"credentials::aws\"].region)",
+            "aws_access_key_id": "$(components.#[_component_id=\"credentials::aws\"].aws_access_key_id)",
+            "aws_secret_access_key": "$(components.#[_component_id=\"credentials::aws\"].aws_secret_access_key)",
+            "service": ""
+        },
+        {
+            "_provider": "$(datacenters.items.0.type)",
+            "_component": "rds_cluster",
+            "_component_id": "rds_cluster::query",
+            "_state": "waiting",
+            "_action": "find",
+            "tags": {
+                "ernest.service": "test-service"
+            },
+            "datacenter_type": "$(datacenters.items.0.type)",
+            "datacenter_region": "$(components.#[_component_id=\"credentials::aws\"].region)",
+            "aws_access_key_id": "$(components.#[_component_id=\"credentials::aws\"].aws_access_key_id)",
+            "aws_secret_access_key": "$(components.#[_component_id=\"credentials::aws\"].aws_secret_access_key)",
+            "service": ""
+        }
+    ],
+    "edges": [
+        {
+            "source": "start",
+            "destination": "vpc::query",
+            "length": 1
+        },
+        {
+            "source": "vpc::query",
+            "destination": "end",
+            "length": 1
+        },
+        {
+            "source": "start",
+            "destination": "network::query",
+            "length": 1
+        },
+        {
+            "source": "network::query",
+            "destination": "end",
+            "length": 1
+        },
+        {
+            "source": "start",
+            "destination": "instance::query",
+            "length": 1
+        },
+        {
+            "source": "instance::query",
+            "destination": "end",
+            "length": 1
+        },
+        {
+            "source": "start",
+            "destination": "security_group::query",
+            "length": 1
+        },
+        {
+            "source": "security_group::query",
+            "destination": "end",
+            "length": 1
+        },
+        {
+            "source": "start",
+            "destination": "nat_gateway::query",
+            "length": 1
+        },
+        {
+            "source": "nat_gateway::query",
+            "destination": "end",
+            "length": 1
+        },
+        {
+            "source": "start",
+            "destination": "elb::query",
+            "length": 1
+        },
+        {
+            "source": "elb::query",
+            "destination": "end",
+            "length": 1
+        },
+        {
+            "source": "start",
+            "destination": "ebs::query",
+            "length": 1
+        },
+        {
+            "source": "ebs::query",
+            "destination": "end",
+            "length": 1
+        },
+        {
+            "source": "start",
+            "destination": "s3::query",
+            "length": 1
+        },
+        {
+            "source": "s3::query",
+            "destination": "end",
+            "length": 1
+        },
+        {
+            "source": "start",
+            "destination": "route53::query",
+            "length": 1
+        },
+        {
+            "source": "route53::query",
+            "destination": "end",
+            "length": 1
+        },
+        {
+            "source": "start",
+            "destination": "rds_instance::query",
+            "length": 1
+        },
+        {
+            "source": "rds_instance::query",
+            "destination": "end",
+            "length": 1
+        },
+        {
+            "source": "start",
+            "destination": "rds_cluster::query",
+            "length": 1
+        },
+        {
+            "source": "rds_cluster::query",
+            "destination": "end",
+            "length": 1
+        }
+    ]
+}

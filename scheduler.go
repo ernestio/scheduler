@@ -24,10 +24,12 @@ type Scheduler struct {
 
 // Receive : recieves a component, updates the graph and returns any new components to be scheduled.
 func (s Scheduler) Receive(c graph.Component) ([]graph.Component, error) {
+	var err error
+
 	if c.GetState() == STATUSCOMPLETED {
 		switch c.GetAction() {
 		case "create":
-			s.graph.AddComponent(c)
+			err = s.graph.AddComponent(c)
 		case "update":
 			s.graph.UpdateComponent(c)
 		case "delete":
@@ -35,7 +37,17 @@ func (s Scheduler) Receive(c graph.Component) ([]graph.Component, error) {
 		case "get":
 			s.graph.UpdateComponent(c)
 		case "find":
+			// for each component found, add it to graph.Components
+			gc := c.(*graph.GenericComponent)
+			for _, ic := range (*gc)["components"].([]interface{}) {
+				msic := ic.(map[string]interface{})
+				err = s.graph.AddComponent(graph.MapGenericComponent(msic))
+			}
 		}
+	}
+
+	if err != nil {
+		return []graph.Component{}, err
 	}
 
 	s.updateChange(c)

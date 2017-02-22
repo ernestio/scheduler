@@ -20,7 +20,3 @@ func main() {
 
 	nc.Subscribe(">", handler)
 }
-
-func handler(msg *nats.Msg) {
-
-}
