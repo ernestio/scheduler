@@ -22,6 +22,10 @@ type Scheduler struct {
 	graph *graph.Graph
 }
 
+func (s *Scheduler) Load(g *graph.Graph) {
+	s.graph = g
+}
+
 // Receive : recieves a component, updates the graph and returns any new components to be scheduled.
 func (s Scheduler) Receive(c graph.Component) ([]graph.Component, error) {
 	var err error
@@ -68,7 +72,6 @@ func (s Scheduler) Receive(c graph.Component) ([]graph.Component, error) {
 // Done : returns true if all components have completed
 func (s Scheduler) Done() bool {
 	for _, c := range s.graph.Changes {
-		//fmt.Println(c.GetState())
 		if c.GetState() != STATUSCOMPLETED {
 			return false
 		}
