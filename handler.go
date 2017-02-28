@@ -13,45 +13,6 @@ import (
 	"github.com/r3labs/graph"
 )
 
-//func loadService(data []byte) *graph.Graph {
-
-//}
-
-func getMessage(data []byte) map[string]interface{} {
-	var m map[string]interface{}
-
-	err := json.Unmarshal(data, &m)
-	if err != nil {
-		errored("could not process message: " + err.Error())
-	}
-
-	return m
-}
-
-func processMessage(subject string, msg []byte) (*Scheduler, *graph.GenericComponent) {
-	var g *graph.Graph
-	var component *graph.GenericComponent
-
-	m := getMessage(msg)
-
-	switch messageType(subject, m) {
-	case "service":
-		g = graphFromService(m)
-		component = NewFakeComponent("start")
-	case "component":
-		g = graphFromComponent(m)
-		component = graph.MapGenericComponent(m)
-	default:
-		unsupported(subject)
-	}
-
-	scheduler := Scheduler{
-		graph: g,
-	}
-
-	return &scheduler, component
-}
-
 func handler(msg *nats.Msg) {
 	scheduler, component := processMessage(msg.Subject, msg.Data)
 
@@ -69,7 +30,10 @@ func handler(msg *nats.Msg) {
 
 	for _, c := range components {
 		c = template(graphData, c)
-		//send(c)
+		err := send(c)
+		if err != nil {
+			errored(err.Error())
+		}
 	}
 
 	// saveService(s.graph.ID, graphData)
@@ -83,13 +47,7 @@ func handler(msg *nats.Msg) {
 	}
 }
 
-func graphFromService(m map[string]interface{}) *graph.Graph {
-	return graph.New()
-}
 
-func graphFromComponent(m map[string]interface{}) *graph.Graph {
-	return graph.New()
-}
 
 func messageType(subject string, m map[string]interface{}) string {
 	switch subject {
@@ -117,8 +75,4 @@ func isCompleted(subject string) bool {
 
 func unsupported(subject string) {
 	log.Printf("Unsupported message: %s", subject)
-}
-
-func errored(err string) {
-	log.Printf("Error: " + err)
 }
