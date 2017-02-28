@@ -33,15 +33,10 @@ func getMapping(id string) (map[string]interface{}, error) {
 	return mapping, err
 }
 
-func setMapping(id string, mapping map[string]interface{}) error {
-	mdata, err := json.Marshal(mapping)
-	if err != nil {
-		return err
-	}
-
+func setMapping(id string, mapping []byte) error {
 	s := service{
 		ID:      id,
-		Mapping: string(mdata),
+		Mapping: string(mapping),
 	}
 
 	data, err := json.Marshal(s)

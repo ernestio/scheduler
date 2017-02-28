@@ -6,6 +6,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 
 	"github.com/r3labs/graph"
 )
@@ -18,9 +19,21 @@ func send(c graph.Component) error {
 
 	subject := c.GetType() + "." + c.GetAction() + "." + c.GetProvider()
 
-    return nc.Publish(subject, data)
+	return nc.Publish(subject, data)
 }
 
-func errored(graph *graph.Graph, err error) {
-	log.Printf("Error: " + err)
+func errored(g *graph.Graph, err error) {
+	log.Println("Error: " + err.Error())
+
+	if g != nil {
+		data, _ := g.ToJSON()
+		nc.Publish(g.Action+".error", data)
+	}
+}
+
+func completed(g *graph.Graph) {
+	log.Println("Completed: " + g.ID)
+
+	data, _ := g.ToJSON()
+	nc.Publish(g.Action+".done", data)
 }
