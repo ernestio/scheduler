@@ -27,13 +27,23 @@ func errored(g *graph.Graph, err error) {
 
 	if g != nil {
 		data, _ := g.ToJSON()
-		nc.Publish(g.Action+".error", data)
+		err := nc.Publish(g.Action+".error", data)
+		if err != nil {
+			log.Println(err.Error())
+		}
 	}
 }
 
 func completed(g *graph.Graph) {
 	log.Println("Completed: " + g.ID)
 
-	data, _ := g.ToJSON()
-	nc.Publish(g.Action+".done", data)
+	data, err := g.ToJSON()
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	err = nc.Publish(g.Action+".done", data)
+	if err != nil {
+		log.Println(err.Error())
+	}
 }

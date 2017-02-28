@@ -15,7 +15,7 @@ func subscriber(msg *nats.Msg) {
 
 	m, err := NewMessage(msg.Subject, msg.Data)
 	if err != nil {
-		log.Println("Could not process message: " + err.Error())
+		log.Println("Error: could not process message: " + err.Error())
 		return
 	}
 
@@ -38,17 +38,23 @@ func subscriber(msg *nats.Msg) {
 	// Marshal the updated graph
 	graphData, err := scheduler.graph.ToJSON()
 	if err != nil {
-		log.Println(err.Error())
+		errored(scheduler.graph, err)
 	}
 
 	// send templated components
 	for _, c := range components {
 		c = template(graphData, c)
-		send(c)
+		err = send(c)
+		if err != nil {
+			errored(scheduler.graph, err)
+		}
 	}
 
 	// save the graph mapping
-	setMapping(scheduler.graph.ID, graphData)
+	err = setMapping(scheduler.graph.ID, graphData)
+	if err != nil {
+		errored(scheduler.graph, err)
+	}
 
 	if scheduler.Done() {
 		completed(scheduler.graph)
