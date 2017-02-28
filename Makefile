@@ -13,6 +13,7 @@ test:
 deps:
 	go get -u gopkg.in/r3labs/graph.v2
 	go get -u github.com/tidwall/gjson
+	go get -u github.com/ernestio/ernest-config-client
 
 dev-deps: deps
 	go get -u github.com/smartystreets/goconvey/convey
