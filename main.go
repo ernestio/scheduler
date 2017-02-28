@@ -5,6 +5,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	ecc "github.com/ernestio/ernest-config-client"
@@ -18,5 +19,7 @@ func main() {
 	cfg = ecc.NewConfig(os.Getenv("NATS_URI"))
 	nc = cfg.Nats()
 
-	nc.Subscribe(">", handler)
+	if _, err := nc.Subscribe(">", handler); err != nil {
+		log.Panic(err)
+	}
 }

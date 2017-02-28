@@ -7,7 +7,7 @@ package main
 import (
 	"encoding/json"
 
-	"github.com/r3labs/graph"
+	graph "gopkg.in/r3labs/graph.v2"
 )
 
 // LoadGraph ...

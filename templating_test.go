@@ -7,8 +7,8 @@ package main
 import (
 	"testing"
 
-	"github.com/r3labs/graph"
 	. "github.com/smartystreets/goconvey/convey"
+	graph "gopkg.in/r3labs/graph.v2"
 )
 
 func TestTemplating(t *testing.T) {
@@ -19,7 +19,7 @@ func TestTemplating(t *testing.T) {
 		}
 
 		g := graph.New()
-		g.Load(gm)
+		_ = g.Load(gm)
 
 		Convey("When template is called", func() {
 			c := g.ComponentAll("vpc::query")
