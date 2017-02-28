@@ -22,6 +22,7 @@ type Scheduler struct {
 	graph *graph.Graph
 }
 
+// Load : loads a graph
 func (s *Scheduler) Load(g *graph.Graph) {
 	s.graph = g
 }

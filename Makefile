@@ -14,6 +14,7 @@ deps: dev-deps
 
 dev-deps:
 	go get -u github.com/r3labs/graph
+	go get -u github.com/tidwall/gjson
 	go get -u github.com/smartystreets/goconvey/convey
 
 clean:

@@ -69,7 +69,6 @@ func TestScheduler(t *testing.T) {
 		var s Scheduler
 
 		Convey("When loading a new build graph", func() {
-
 			s.graph = graph.New()
 			gerr := s.graph.Load(bms)
 			So(gerr, ShouldBeNil)
@@ -275,7 +274,8 @@ func TestScheduler(t *testing.T) {
 				Convey("It should move the result's components to the components field", func() {
 					So(err, ShouldBeNil)
 					So(len(components), ShouldEqual, 0)
-					So(len(s.graph.Components), ShouldEqual, 2)
+					So(len(s.graph.Components), ShouldEqual, 3)
+
 					So(s.graph.Component("component-1"), ShouldNotBeNil)
 					So(s.graph.Component("component-2"), ShouldNotBeNil)
 				})

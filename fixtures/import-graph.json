@@ -1,6 +1,17 @@
 {
     "id": "",
-    "components": [],
+    "components": [
+        {
+            "_provider": "aws",
+            "_component": "vpc",
+            "_component_id": "credentials::aws",
+            "_state": "",
+            "_action": "",
+            "aws_access_key_id": "test",
+            "aws_secret_access_key": "test",
+            "service": ""
+        }
+    ],
     "changes": [
         {
             "_provider": "$(datacenters.items.0.type)",

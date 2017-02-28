@@ -54,7 +54,9 @@ func mapSlice(data []byte, values []interface{}) []interface{} {
 }
 
 // template : replaces any qjson queries in fields with information from the current service build
-func template(data []byte, component graph.Component) {
+func template(data []byte, component graph.Component) graph.Component {
 	c := component.(*graph.GenericComponent)
-	mapHash(data, c)
+	tc := mapHash(data, *c)
+
+	return graph.MapGenericComponent(tc)
 }

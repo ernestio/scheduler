@@ -62,20 +62,23 @@ func handler(msg *nats.Msg) {
 		// return
 	}
 
-	graphData := scheduler.graph.ToJSON()
+	graphData, err := scheduler.graph.ToJSON()
+	if err != nil {
+		errored(err.Error())
+	}
 
 	for _, c := range components {
-		template(graphData, c)
-		send(c)
+		c = template(graphData, c)
+		//send(c)
 	}
 
 	// saveService(s.graph.ID, graphData)
 
-	if s.Done() {
+	if scheduler.Done() {
 
 	}
 
-	if s.Errored() {
+	if scheduler.Errored() {
 
 	}
 }
