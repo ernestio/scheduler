@@ -8,10 +8,16 @@ import (
 	"encoding/json"
 	"strings"
 
-	"errors"
 	"log"
 
 	graph "gopkg.in/r3labs/graph.v2"
+)
+
+const (
+	// COMPONENTYPE : component type
+	COMPONENTYPE = "component"
+	// SERVICETYPE : service type
+	SERVICETYPE = "service"
 )
 
 // Message ...
@@ -45,14 +51,22 @@ func (m *Message) getGraph() *graph.Graph {
 	g := graph.New()
 	key := m.getServiceKey()
 
-	mapping, err := getMapping(m.data[key].(string))
+	id, ok := m.data[key].(string)
+	if ok != true {
+		log.Println("Error: could not get graph from message")
+		return nil
+	}
+
+	mapping, err := getMapping(id)
 	if err != nil {
-		log.Println("Error: Could not get mapping: " + m.data[key].(string))
+		log.Println("Error: could not get mapping: " + id)
+		return nil
 	}
 
 	err = g.Load(mapping)
 	if err != nil {
-		log.Println(g, errors.New("Could not load mapping!"))
+		log.Println("Error: could not load mapping!")
+		return nil
 	}
 
 	return g
@@ -62,9 +76,9 @@ func (m *Message) getComponent() *graph.GenericComponent {
 	var component *graph.GenericComponent
 
 	switch m.getType() {
-	case "service":
+	case SERVICETYPE:
 		component = NewFakeComponent("start")
-	case "component":
+	case COMPONENTYPE:
 		component = graph.MapGenericComponent(m.data)
 	}
 
@@ -72,7 +86,7 @@ func (m *Message) getComponent() *graph.GenericComponent {
 }
 
 func (m *Message) getServiceKey() string {
-	if m.getType() == "service" {
+	if m.getType() == SERVICETYPE {
 		return "id"
 	}
 
@@ -82,22 +96,22 @@ func (m *Message) getServiceKey() string {
 func (m *Message) getType() string {
 	switch m.subject {
 	case "service.create", "service.delete", "service.import", "service.patch":
-		return "service"
+		return SERVICETYPE
 	}
 
 	if m.data["_component_id"] != nil && m.isCompleted() {
-		return "component"
+		return COMPONENTYPE
 	}
 
 	return "unsupported"
 }
 
 func (m *Message) isSupported() bool {
-	if m.getType() == "component" || m.getType() == "service" {
-		return true
+	if m.getType() == "unsupported" {
+		return false
 	}
 
-	return false
+	return true
 }
 
 func (m *Message) isCompleted() bool {
