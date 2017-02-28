@@ -13,6 +13,13 @@ import (
 	graph "gopkg.in/r3labs/graph.v2"
 )
 
+// markAs : sets the state of a collection of components
+func markAs(cs []graph.Component, state string) {
+	for i := 0; i < len(cs); i++ {
+		cs[i].SetState(state)
+	}
+}
+
 func loadjsongraph(filename string) (map[string]interface{}, error) {
 	var ms map[string]interface{}
 
@@ -222,7 +229,7 @@ func TestScheduler(t *testing.T) {
 				})
 
 				Convey("Which is the last component", func() {
-					MarkAs(s.graph.Changes, STATUSCOMPLETED)
+					markAs(s.graph.Changes, STATUSCOMPLETED)
 					c := cp(s.graph.ComponentAll("network::web"))
 					s.graph.ComponentAll("network::web").SetState(STATUSRUNNING)
 

@@ -32,6 +32,15 @@ func NewMessage(subject string, data []byte) (*Message, error) {
 	return &Message{data: m}, nil
 }
 
+// NewFakeComponent : returns an empty component that can be used as start or end point
+func NewFakeComponent(id string) *graph.GenericComponent {
+	c := make(graph.GenericComponent)
+	c["_component_id"] = id
+	c["_state"] = STATUSCOMPLETED
+	c["_state"] = "none"
+	return &c
+}
+
 func (m *Message) getGraph() *graph.Graph {
 	g := graph.New()
 	key := m.getServiceKey()
