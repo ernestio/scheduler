@@ -5,17 +5,19 @@ build:
 	go build -v ./...
 
 lint:
-	go vet ./...
+	gometalinter --config .linter.conf
 
 test:
 	go test -v ./... --cover
 
-deps: dev-deps
-
-dev-deps:
-	go get -u github.com/r3labs/graph
+deps:
+	go get -u gopkg.in/r3labs/graph.v2
 	go get -u github.com/tidwall/gjson
+
+dev-deps: deps
 	go get -u github.com/smartystreets/goconvey/convey
+	go get github.com/alecthomas/gometalinter
+	gometalinter --install
 
 clean:
 	go clean

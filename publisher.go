@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/r3labs/graph"
+	graph "gopkg.in/r3labs/graph.v2"
 )
 
 func send(c graph.Component) error {

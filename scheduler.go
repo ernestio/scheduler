@@ -7,13 +7,17 @@ package main
 import (
 	"errors"
 
-	"github.com/r3labs/graph"
+	graph "gopkg.in/r3labs/graph.v2"
 )
 
 const (
-	STATUSERRORED   = "errored"
-	STATUSWAITING   = "waiting"
-	STATUSRUNNING   = "running"
+	// STATUSERRORED : Errored status
+	STATUSERRORED = "errored"
+	// STATUSWAITING : Waiting status
+	STATUSWAITING = "waiting"
+	// STATUSRUNNING : Running status
+	STATUSRUNNING = "running"
+	// STATUSCOMPLETED : Completed status
 	STATUSCOMPLETED = "completed"
 )
 
@@ -59,7 +63,7 @@ func (s Scheduler) Receive(c graph.Component) ([]graph.Component, error) {
 
 	// Allow the other running components to finish before returning an error
 	if c.GetState() == STATUSERRORED && s.Running() != true {
-		return []graph.Component{}, errors.New("Service provisioning has failed with an error.")
+		return []graph.Component{}, errors.New("Service provisioning has failed with an error")
 	}
 
 	next := s.next(c)

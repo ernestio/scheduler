@@ -9,8 +9,8 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/r3labs/graph"
 	. "github.com/smartystreets/goconvey/convey"
+	graph "gopkg.in/r3labs/graph.v2"
 )
 
 func loadjsongraph(filename string) (map[string]interface{}, error) {

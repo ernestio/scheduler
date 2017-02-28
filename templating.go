@@ -5,8 +5,8 @@
 package main
 
 import (
-	"github.com/r3labs/graph"
 	"github.com/tidwall/gjson"
+	graph "gopkg.in/r3labs/graph.v2"
 )
 
 // mapString : fills a templated string field on its mapped value

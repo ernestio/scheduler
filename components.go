@@ -4,7 +4,9 @@
 
 package main
 
-import "github.com/r3labs/graph"
+import (
+	graph "gopkg.in/r3labs/graph.v2"
+)
 
 // NewFakeComponent : returns an empty component that can be used as start or end point
 func NewFakeComponent(id string) *graph.GenericComponent {
