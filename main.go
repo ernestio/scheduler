@@ -7,6 +7,7 @@ package main
 import (
 	"log"
 	"os"
+	"runtime"
 
 	ecc "github.com/ernestio/ernest-config-client"
 	"github.com/nats-io/nats"
@@ -22,4 +23,6 @@ func main() {
 	if _, err := nc.Subscribe(">", subscriber); err != nil {
 		log.Panic(err)
 	}
+
+	runtime.Goexit()
 }
