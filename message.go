@@ -32,7 +32,7 @@ func NewMessage(subject string, data []byte) (*Message, error) {
 
 	err := json.Unmarshal(data, &m)
 	if err != nil {
-		return &Message{}, err
+		return nil, err
 	}
 
 	return &Message{data: m}, nil
@@ -49,6 +49,8 @@ func NewFakeComponent(id string) *graph.GenericComponent {
 
 func (m *Message) getGraph() *graph.Graph {
 	g := graph.New()
+
+	g.Action = m.subject
 
 	if m.getType() == SERVICETYPE {
 		err := g.Load(m.data)
@@ -128,8 +130,8 @@ func (m *Message) isSupported() bool {
 
 func (m *Message) isCompleted() bool {
 	parts := strings.Split(m.subject, ".")
-	if len(parts) == 4 {
-		if parts[3] == "done" || parts[3] == "error" {
+	if len(parts) > 1 {
+		if parts[len(parts)-1] == "done" || parts[len(parts)-1] == "error" {
 			return true
 		}
 	}

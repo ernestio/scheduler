@@ -18,11 +18,15 @@ func subscriber(msg *nats.Msg) {
 		return
 	}
 
+	fmt.Println(msg.Subject)
+
 	m, err := NewMessage(msg.Subject, msg.Data)
 	if err != nil {
 		log.Println("Error: could not process message: " + err.Error())
 		return
 	}
+
+	fmt.Println("got message " + msg.Subject)
 
 	if m.isSupported() != true {
 		unsupported(m.subject)
@@ -35,9 +39,6 @@ func subscriber(msg *nats.Msg) {
 	// get graph and processed component
 	scheduler.graph = m.getGraph()
 	component := m.getComponent()
-
-	// set graph action
-	scheduler.graph.Action = msg.Subject
 
 	// pass the component to the scheduler,
 	// receive a list of components to schedule
