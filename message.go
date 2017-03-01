@@ -50,8 +50,6 @@ func NewFakeComponent(id string) *graph.GenericComponent {
 func (m *Message) getGraph() *graph.Graph {
 	g := graph.New()
 
-	g.Action = m.subject
-
 	if m.getType() == SERVICETYPE {
 		err := g.Load(m.data)
 		if err != nil {
@@ -60,7 +58,7 @@ func (m *Message) getGraph() *graph.Graph {
 		}
 
 		// set service id on components
-		for _, c := range g.Components {
+		for _, c := range g.Changes {
 			gc, ok := c.(*graph.GenericComponent)
 			if ok {
 				(*gc)["service"] = g.ID
@@ -68,6 +66,8 @@ func (m *Message) getGraph() *graph.Graph {
 				log.Println("could not set service ID!")
 			}
 		}
+
+		g.Action = m.subject
 
 		return g
 	}
@@ -92,6 +92,8 @@ func (m *Message) getGraph() *graph.Graph {
 		log.Println("Error: could not load mapping!" + err.Error())
 		return nil
 	}
+
+	g.Action = m.subject
 
 	return g
 }
