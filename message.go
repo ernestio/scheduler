@@ -59,6 +59,14 @@ func (m *Message) getGraph() *graph.Graph {
 			return nil
 		}
 
+		// set service id on components
+		for _, c := range g.Components {
+			gc, ok := c.(*graph.GenericComponent)
+			if ok {
+				(*gc)["service"] = g.ID
+			}
+		}
+
 		return g
 	}
 

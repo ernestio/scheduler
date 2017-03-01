@@ -18,6 +18,7 @@ func send(c graph.Component) error {
 	}
 
 	subject := c.GetType() + "." + c.GetAction() + "." + c.GetProvider()
+	log.Printf("sending: %s", subject)
 
 	return nc.Publish(subject, data)
 }
