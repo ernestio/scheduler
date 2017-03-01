@@ -35,7 +35,7 @@ func NewMessage(subject string, data []byte) (*Message, error) {
 		return nil, err
 	}
 
-	return &Message{data: m}, nil
+	return &Message{subject: subject, data: m}, nil
 }
 
 // NewFakeComponent : returns an empty component that can be used as start or end point
