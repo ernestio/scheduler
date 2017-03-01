@@ -64,6 +64,8 @@ func (m *Message) getGraph() *graph.Graph {
 			gc, ok := c.(*graph.GenericComponent)
 			if ok {
 				(*gc)["service"] = g.ID
+			} else {
+				log.Println("could not set service ID!")
 			}
 		}
 
@@ -112,7 +114,7 @@ func (m *Message) getServiceKey() string {
 		return "id"
 	}
 
-	return "_component_id"
+	return "service"
 }
 
 func (m *Message) getType() string {
