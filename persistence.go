@@ -15,7 +15,6 @@ type service struct {
 }
 
 func getMapping(id string) (map[string]interface{}, error) {
-	var s *service
 	var mapping map[string]interface{}
 
 	msg, err := nc.Request("service.get.mapping", []byte(`{"id":"`+id+`"}`), time.Second)
@@ -23,12 +22,7 @@ func getMapping(id string) (map[string]interface{}, error) {
 		return mapping, err
 	}
 
-	err = json.Unmarshal(msg.Data, s)
-	if err != nil {
-		return mapping, err
-	}
-
-	err = json.Unmarshal([]byte(s.Mapping), &mapping)
+	err = json.Unmarshal(msg.Data, &mapping)
 
 	return mapping, err
 }
