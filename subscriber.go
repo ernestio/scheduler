@@ -13,6 +13,10 @@ import (
 func subscriber(msg *nats.Msg) {
 	var scheduler Scheduler
 
+	if msg.Subject == "" {
+		return
+	}
+
 	m, err := NewMessage(msg.Subject, msg.Data)
 	if err != nil {
 		log.Println("Error: could not process message: " + err.Error())
@@ -24,9 +28,14 @@ func subscriber(msg *nats.Msg) {
 		return
 	}
 
+	log.Printf("received: %s", msg.Subject)
+
 	// get graph and processed component
 	scheduler.graph = m.getGraph()
 	component := m.getComponent()
+
+	// set graph action
+	scheduler.graph.Action = msg.Subject
 
 	// pass the component to the scheduler,
 	// receive a list of components to schedule
@@ -62,5 +71,7 @@ func subscriber(msg *nats.Msg) {
 }
 
 func unsupported(subject string) {
-	log.Printf("Unsupported message: %s", subject)
+	if subject != "" {
+		log.Printf("Unsupported message: %s", subject)
+	}
 }
