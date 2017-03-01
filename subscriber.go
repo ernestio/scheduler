@@ -5,6 +5,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/nats-io/nats"
@@ -29,6 +30,7 @@ func subscriber(msg *nats.Msg) {
 	}
 
 	log.Printf("received: %s", msg.Subject)
+	fmt.Println(string(msg.Data))
 
 	// get graph and processed component
 	scheduler.graph = m.getGraph()
