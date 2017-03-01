@@ -49,6 +49,17 @@ func NewFakeComponent(id string) *graph.GenericComponent {
 
 func (m *Message) getGraph() *graph.Graph {
 	g := graph.New()
+
+	if m.getType() == SERVICETYPE {
+		err := g.Load(m.data)
+		if err != nil {
+			log.Println("Error: could not load mapping!" + err.Error())
+			return nil
+		}
+
+		return g
+	}
+
 	key := m.getServiceKey()
 
 	id, ok := m.data[key].(string)
@@ -60,12 +71,13 @@ func (m *Message) getGraph() *graph.Graph {
 	mapping, err := getMapping(id)
 	if err != nil {
 		log.Println("Error: could not get mapping: " + id)
+		log.Println(err.Error())
 		return nil
 	}
 
 	err = g.Load(mapping)
 	if err != nil {
-		log.Println("Error: could not load mapping!")
+		log.Println("Error: could not load mapping!" + err.Error())
 		return nil
 	}
 
