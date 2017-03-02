@@ -6,9 +6,9 @@ package main
 
 import (
 	"encoding/json"
-	"strings"
-
+	"errors"
 	"log"
+	"strings"
 
 	graph "gopkg.in/r3labs/graph.v2"
 )
@@ -20,15 +20,20 @@ const (
 	SERVICETYPE = "service"
 )
 
-// Message ...
+// Message : Struct representing a received message, with
+// its endpoint as "subject" and the content as "data"
 type Message struct {
 	subject string
 	data    map[string]interface{}
 }
 
-// NewMessage ...
+// NewMessage : Message constructor
 func NewMessage(subject string, data []byte) (*Message, error) {
 	var m map[string]interface{}
+
+	if subject == "" {
+		return nil, errors.New("Error : invalid message subject")
+	}
 
 	err := json.Unmarshal(data, &m)
 	if err != nil {
@@ -47,6 +52,8 @@ func NewFakeComponent(id string) *graph.GenericComponent {
 	return &c
 }
 
+// getGraph : will return the graph attached to the current message
+// or nil in case there is some problem
 func (m *Message) getGraph() *graph.Graph {
 	g := graph.New()
 
@@ -98,6 +105,7 @@ func (m *Message) getGraph() *graph.Graph {
 	return g
 }
 
+// getComponent : will get the graph current component
 func (m *Message) getComponent() *graph.GenericComponent {
 	var component *graph.GenericComponent
 
@@ -111,6 +119,7 @@ func (m *Message) getComponent() *graph.GenericComponent {
 	return component
 }
 
+// getServiceKey : get the field key to identify the service
 func (m *Message) getServiceKey() string {
 	if m.getType() == SERVICETYPE {
 		return "id"
@@ -119,6 +128,8 @@ func (m *Message) getServiceKey() string {
 	return "service"
 }
 
+// getType : a message cab have a type 'service' or 'component'. String
+// 'unsupported' will be returned as default value
 func (m *Message) getType() string {
 	switch m.subject {
 	case "service.create", "service.delete", "service.import", "service.patch":
@@ -132,6 +143,7 @@ func (m *Message) getType() string {
 	return "unsupported"
 }
 
+// isSupported : check to see if the message is supported or not
 func (m *Message) isSupported() bool {
 	if m.getType() == "unsupported" {
 		return false
@@ -140,6 +152,7 @@ func (m *Message) isSupported() bool {
 	return true
 }
 
+// isCompleted : check if the message is a final message *.done or *.error
 func (m *Message) isCompleted() bool {
 	parts := strings.Split(m.subject, ".")
 	if len(parts) > 1 {

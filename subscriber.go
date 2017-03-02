@@ -10,12 +10,10 @@ import (
 	"github.com/nats-io/nats"
 )
 
+// subscriber : manages the subscription to all messages, and
+// discriminates the ones are processable.
 func subscriber(msg *nats.Msg) {
 	var scheduler Scheduler
-
-	if msg.Subject == "" {
-		return
-	}
 
 	m, err := NewMessage(msg.Subject, msg.Data)
 	if err != nil {
@@ -30,43 +28,40 @@ func subscriber(msg *nats.Msg) {
 
 	log.Printf("received: %s", msg.Subject)
 
-	// get graph and processed component
 	scheduler.graph = m.getGraph()
-	component := m.getComponent()
+	processComponent(&scheduler, m)
+	if scheduler.Done() {
+		completed(scheduler.graph)
+	}
+}
 
-	// pass the component to the scheduler,
-	// receive a list of components to schedule
-	components, err := scheduler.Receive(component)
+// processComponent : get the graph and process the component
+func processComponent(scheduler *Scheduler, m *Message) {
+	marshalledGraph, err := scheduler.graph.ToJSON()
 	if err != nil {
 		errored(scheduler.graph, err)
 	}
 
-	// Marshal the updated graph
-	graphData, err := scheduler.graph.ToJSON()
+	componentsToSchedule, err := scheduler.Receive(m.getComponent())
 	if err != nil {
 		errored(scheduler.graph, err)
 	}
 
-	// send templated components
-	for _, c := range components {
-		c = template(graphData, c)
+	for _, c := range componentsToSchedule {
+		c = template(marshalledGraph, c)
 		err = send(c)
 		if err != nil {
 			errored(scheduler.graph, err)
 		}
 	}
 
-	// save the graph mapping
-	err = setMapping(scheduler.graph.ID, graphData)
+	err = setMapping(scheduler.graph.ID, marshalledGraph)
 	if err != nil {
 		errored(scheduler.graph, err)
 	}
-
-	if scheduler.Done() {
-		completed(scheduler.graph)
-	}
 }
 
+// upsupported : logs an unsupported subject
 func unsupported(subject string) {
 	if subject != "" {
 		log.Printf("Unsupported message: %s", subject)
