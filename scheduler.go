@@ -47,10 +47,11 @@ func (s Scheduler) Receive(c graph.Component) ([]graph.Component, error) {
 			s.graph.UpdateComponent(c)
 		case "find":
 			// for each component found, add it to graph.Components
-			gc := c.(*graph.GenericComponent)
-			for _, ic := range (*gc)["components"].([]interface{}) {
-				msic := ic.(map[string]interface{})
-				err = s.graph.AddComponent(graph.MapGenericComponent(msic))
+			for _, fc := range getQueryComponents(c) {
+				err = s.graph.AddComponent(fc)
+				if err != nil {
+					break
+				}
 			}
 		}
 	}
@@ -172,4 +173,23 @@ func (s Scheduler) removeChange(c graph.Component) {
 			s.graph.Changes = append(s.graph.Changes[:i], s.graph.Changes[i+1:]...)
 		}
 	}
+}
+
+func getQueryComponents(q graph.Component) []graph.Component {
+	var components []graph.Component
+
+	// for each component found, add it to graph.Components
+	gc := q.(*graph.GenericComponent)
+	results, ok := (*gc)["components"].([]interface{})
+	if ok != true {
+		return components
+	}
+
+	for _, ic := range results {
+		msic := ic.(map[string]interface{})
+		ggc := graph.MapGenericComponent(msic)
+		components = append(components, ggc)
+	}
+
+	return components
 }

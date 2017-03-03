@@ -29,35 +29,59 @@ func subscriber(msg *nats.Msg) {
 	log.Printf("received: %s", msg.Subject)
 
 	scheduler.graph = m.getGraph()
-	processComponent(&scheduler, m)
+	processMessage(&scheduler, m)
 	if scheduler.Done() {
 		completed(scheduler.graph)
 	}
 }
 
-// processComponent : get the graph and process the component
-func processComponent(scheduler *Scheduler, m *Message) {
+// processMessage : get the graph and process the component
+func processMessage(scheduler *Scheduler, m *Message) {
 	marshalledGraph, err := scheduler.graph.ToJSON()
 	if err != nil {
 		errored(scheduler.graph, err)
 	}
 
-	componentsToSchedule, err := scheduler.Receive(m.getComponent())
+	component := m.getComponent()
+	if m.getType() == COMPONENTYPE {
+		switch component.GetAction() {
+		case "create", "update", "get":
+			err = setComponent(component)
+		case "delete":
+			err = deleteComponent(component)
+		case "find":
+			for _, fc := range getQueryComponents(component) {
+				err = setComponent(fc)
+				if err != nil {
+					break
+				}
+			}
+		}
+	}
+
+	if err != nil {
+		errored(scheduler.graph, err)
+	}
+
+	componentsToSchedule, err := scheduler.Receive(component)
 	if err != nil {
 		errored(scheduler.graph, err)
 	}
 
 	for _, c := range componentsToSchedule {
+		// update component on change
+		err := setChange(c)
+		if err != nil {
+			log.Println("could not store change: " + c.GetID())
+			continue
+		}
+
+		// template and send component
 		c = template(marshalledGraph, c)
 		err = send(c)
 		if err != nil {
 			errored(scheduler.graph, err)
 		}
-	}
-
-	err = setMapping(scheduler.graph.ID, marshalledGraph)
-	if err != nil {
-		errored(scheduler.graph, err)
 	}
 }
 

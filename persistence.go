@@ -7,6 +7,8 @@ package main
 import (
 	"encoding/json"
 	"time"
+
+	graph "gopkg.in/r3labs/graph.v2"
 )
 
 type service struct {
@@ -42,6 +44,50 @@ func setMapping(id string, mapping []byte) error {
 	if err != nil {
 		return err
 	}
+
+	return err
+}
+
+func setComponent(c graph.Component) error {
+	data, err := json.Marshal(c)
+	if err != nil {
+		return err
+	}
+
+	_, err = nc.Request("service.set.mapping.component", data, time.Second)
+
+	return err
+}
+
+func deleteComponent(c graph.Component) error {
+	data, err := json.Marshal(c)
+	if err != nil {
+		return err
+	}
+
+	_, err = nc.Request("service.delete.mapping.component", data, time.Second)
+
+	return err
+}
+
+func setChange(c graph.Component) error {
+	data, err := json.Marshal(c)
+	if err != nil {
+		return err
+	}
+
+	_, err = nc.Request("service.set.mapping.change", data, time.Second)
+
+	return err
+}
+
+func deleteChange(c graph.Component) error {
+	data, err := json.Marshal(c)
+	if err != nil {
+		return err
+	}
+
+	_, err = nc.Request("service.delete.mapping.change", data, time.Second)
 
 	return err
 }
