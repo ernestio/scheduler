@@ -6,7 +6,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 
 	graph "gopkg.in/r3labs/graph.v2"
 )
@@ -61,17 +60,7 @@ func (s Scheduler) Receive(c graph.Component) ([]graph.Component, error) {
 		return []graph.Component{}, err
 	}
 
-	fmt.Println(c.GetID())
-	data, _ := s.graph.ToJSON()
-	fmt.Println(string(data))
-
 	s.updateChange(c)
-
-	data, _ = s.graph.ToJSON()
-	fmt.Println(string(data))
-
-	fmt.Println(s.Errored())
-	fmt.Println(s.Running())
 
 	// Allow the other running components to finish before returning an error
 	if c.GetState() == STATUSERRORED && s.Running() != true {
@@ -126,8 +115,6 @@ func (s Scheduler) next(c graph.Component) []graph.Component {
 		return cs
 	}
 
-	fmt.Println(*s.neighbours(c.GetID()))
-
 	for _, n := range *s.neighbours(c.GetID()) {
 		if s.ready(n) {
 			cs = append(cs, n)
@@ -138,9 +125,7 @@ func (s Scheduler) next(c graph.Component) []graph.Component {
 }
 
 func (s Scheduler) ready(c graph.Component) bool {
-	fmt.Println("Is ready?: " + c.GetID())
 	for _, o := range *s.origins(c.GetID()) {
-		fmt.Println("   " + o.GetID() + " : " + o.GetState())
 		if o.GetState() != "completed" {
 			return false
 		}
