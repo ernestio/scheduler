@@ -38,33 +38,21 @@ func subscriber(msg *nats.Msg) {
 
 // processMessage : get the graph and process the component
 func processMessage(scheduler *Scheduler, m *Message) {
-	marshalledGraph, err := scheduler.graph.ToJSON()
-	if err != nil {
-		errored(scheduler.graph, err)
-	}
-
 	component := m.getComponent()
+
 	if m.getType() == COMPONENTYPE {
-		switch component.GetAction() {
-		case "create", "update", "get":
-			err = setComponent(component)
-		case "delete":
-			err = deleteComponent(component)
-		case "find":
-			for _, fc := range getQueryComponents(component) {
-				err = setComponent(fc)
-				if err != nil {
-					break
-				}
-			}
+		err := storeComponent(component)
+		if err != nil {
+			errored(scheduler.graph, err)
 		}
 	}
 
+	componentsToSchedule, err := scheduler.Receive(component)
 	if err != nil {
 		errored(scheduler.graph, err)
 	}
 
-	componentsToSchedule, err := scheduler.Receive(component)
+	marshalledGraph, err := scheduler.graph.ToJSON()
 	if err != nil {
 		errored(scheduler.graph, err)
 	}
@@ -88,6 +76,35 @@ func processMessage(scheduler *Scheduler, m *Message) {
 			errored(scheduler.graph, err)
 		}
 	}
+}
+
+func storeComponent(c graph.Component) error {
+	var err error
+
+	// update the change
+	if c.GetAction() != "none" {
+		err = setChange(c)
+		if err != nil {
+			return err
+		}
+	}
+
+	// update the component
+	switch c.GetAction() {
+	case "create", "update", "get":
+		err = setComponent(c)
+	case "delete":
+		err = deleteComponent(c)
+	case "find":
+		for _, fc := range getQueryComponents(c) {
+			err = setComponent(fc)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return err
 }
 
 // upsupported : logs an unsupported subject
