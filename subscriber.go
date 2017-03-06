@@ -8,6 +8,7 @@ import (
 	"log"
 
 	"github.com/nats-io/nats"
+	graph "gopkg.in/r3labs/graph.v2"
 )
 
 // subscriber : manages the subscription to all messages, and
@@ -69,6 +70,10 @@ func processMessage(scheduler *Scheduler, m *Message) {
 	}
 
 	for _, c := range componentsToSchedule {
+		// set the service id
+		gc := c.(*graph.GenericComponent)
+		(*gc)["service"] = scheduler.graph.ID
+
 		// update component on change
 		err := setChange(c)
 		if err != nil {
