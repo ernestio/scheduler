@@ -61,11 +61,21 @@ func (s Scheduler) Receive(c graph.Component) ([]graph.Component, error) {
 		return []graph.Component{}, err
 	}
 
+	fmt.Println(c.GetID())
+	data, _ := s.graph.ToJSON()
+	fmt.Println(string(data))
+
 	s.updateChange(c)
+
+	data, _ = s.graph.ToJSON()
+	fmt.Println(string(data))
+
+	fmt.Println(s.Errored())
+	fmt.Println(s.Running())
 
 	// Allow the other running components to finish before returning an error
 	if c.GetState() == STATUSERRORED && s.Running() != true {
-		return []graph.Component{}, errors.New("Service provisioning has failed with an error")
+		return []graph.Component{}, errors.New("service provisioning has failed with an error")
 	}
 
 	next := s.next(c)
@@ -115,6 +125,8 @@ func (s Scheduler) next(c graph.Component) []graph.Component {
 	if s.Errored() {
 		return cs
 	}
+
+	fmt.Println(*s.neighbours(c.GetID()))
 
 	for _, n := range *s.neighbours(c.GetID()) {
 		if s.ready(n) {

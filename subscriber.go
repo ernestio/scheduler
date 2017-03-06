@@ -18,7 +18,6 @@ func subscriber(msg *nats.Msg) {
 
 	m, err := NewMessage(msg.Subject, msg.Data)
 	if err != nil {
-		log.Println("Error: could not process message: " + err.Error())
 		return
 	}
 
