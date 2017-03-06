@@ -6,6 +6,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 
 	graph "gopkg.in/r3labs/graph.v2"
 )
@@ -125,7 +126,9 @@ func (s Scheduler) next(c graph.Component) []graph.Component {
 }
 
 func (s Scheduler) ready(c graph.Component) bool {
+	fmt.Println("Is ready?: " + c.GetID())
 	for _, o := range *s.origins(c.GetID()) {
+		fmt.Println("   " + o.GetID() + " : " + o.GetState())
 		if o.GetState() != "completed" {
 			return false
 		}
