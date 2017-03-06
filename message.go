@@ -55,30 +55,56 @@ func NewFakeComponent(id string) *graph.GenericComponent {
 // getGraph : will return the graph attached to the current message
 // or nil in case there is some problem
 func (m *Message) getGraph() *graph.Graph {
-	g := graph.New()
-
 	if m.getType() == SERVICETYPE {
-		err := g.Load(m.data)
-		if err != nil {
-			log.Println("Error: could not load mapping!" + err.Error())
-			return nil
-		}
-
-		// set service id on components
-		for _, c := range g.Changes {
-			gc, ok := c.(*graph.GenericComponent)
-			if ok {
-				(*gc)["service"] = g.ID
-			} else {
-				log.Println("could not set service ID!")
-			}
-		}
-
-		g.Action = m.subject
-
-		return g
+		return m.getGraphFromGraph()
 	}
 
+	return m.getGraphFromComponent()
+}
+
+// getComponent : will get the graph current component
+func (m *Message) getComponent() *graph.GenericComponent {
+	var component *graph.GenericComponent
+
+	switch m.getType() {
+	case SERVICETYPE:
+		component = NewFakeComponent("start")
+	case COMPONENTYPE:
+		component = graph.MapGenericComponent(m.data)
+	}
+
+	return component
+}
+
+func (m *Message) getGraphFromGraph() *graph.Graph {
+	g := graph.New()
+
+	err := g.Load(m.data)
+	if err != nil {
+		log.Println("Error: could not load mapping!" + err.Error())
+		return nil
+	}
+
+	g.Action = m.subject
+
+	// save the Action
+	mapping, err := g.ToJSON()
+	if err != nil {
+		log.Println("Error: could not store mapping!" + err.Error())
+		return nil
+	}
+
+	err = setMapping(g.ID, mapping)
+	if err != nil {
+		log.Println("Error: could not store mapping!" + err.Error())
+		return nil
+	}
+
+	return g
+}
+
+func (m *Message) getGraphFromComponent() *graph.Graph {
+	g := graph.New()
 	key := m.getServiceKey()
 
 	id, ok := m.data[key].(string)
@@ -100,23 +126,7 @@ func (m *Message) getGraph() *graph.Graph {
 		return nil
 	}
 
-	g.Action = m.subject
-
 	return g
-}
-
-// getComponent : will get the graph current component
-func (m *Message) getComponent() *graph.GenericComponent {
-	var component *graph.GenericComponent
-
-	switch m.getType() {
-	case SERVICETYPE:
-		component = NewFakeComponent("start")
-	case COMPONENTYPE:
-		component = graph.MapGenericComponent(m.data)
-	}
-
-	return component
 }
 
 // getServiceKey : get the field key to identify the service
