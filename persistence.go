@@ -65,7 +65,7 @@ func deleteComponent(c graph.Component) error {
 		return err
 	}
 
-	_, err = nc.Request("service.delete.mapping.component", data, time.Second)
+	_, err = nc.Request("service.del.mapping.component", data, time.Second)
 
 	return err
 }
@@ -87,7 +87,7 @@ func deleteChange(c graph.Component) error {
 		return err
 	}
 
-	_, err = nc.Request("service.delete.mapping.change", data, time.Second)
+	_, err = nc.Request("service.del.mapping.change", data, time.Second)
 
 	return err
 }
