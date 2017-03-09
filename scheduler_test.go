@@ -119,7 +119,7 @@ func TestScheduler(t *testing.T) {
 					components, err := s.Receive(c)
 
 					Convey("It should not add it to the components field", func() {
-						So(err, ShouldBeNil)
+						So(err, ShouldNotBeNil)
 						So(len(components), ShouldEqual, 0)
 						So(s.graph.Component(c.GetID()), ShouldBeNil)
 					})
@@ -153,7 +153,7 @@ func TestScheduler(t *testing.T) {
 					components, err := s.Receive(c)
 
 					Convey("It should not update it in the components field", func() {
-						So(err, ShouldBeNil)
+						So(err, ShouldNotBeNil)
 						So(len(components), ShouldEqual, 0)
 						So(s.graph.Component(c.GetID()).GetState(), ShouldEqual, "")
 					})
@@ -188,7 +188,7 @@ func TestScheduler(t *testing.T) {
 					components, err := s.Receive(c)
 
 					Convey("It should not remove it from the components field", func() {
-						So(err, ShouldBeNil)
+						So(err, ShouldNotBeNil)
 						So(len(components), ShouldEqual, 0)
 						So(s.graph.Component(c.GetID()), ShouldNotBeNil)
 
@@ -248,7 +248,7 @@ func TestScheduler(t *testing.T) {
 					s.graph.ComponentAll("instance::web-1").SetState(STATUSRUNNING)
 					s.graph.ComponentAll("instance::web-2").SetState(STATUSRUNNING)
 					c := s.graph.ComponentAll("instance::web-3")
-					c.SetState(STATUSRUNNING)
+					c.SetState(STATUSERRORED)
 					components, err := s.Receive(c)
 					Convey("It should wait for the other components to complete", func() {
 						So(err, ShouldBeNil)
@@ -258,10 +258,10 @@ func TestScheduler(t *testing.T) {
 
 				Convey("When other no other components are running", func() {
 					c := s.graph.ComponentAll("instance::web-3")
-					c.SetState(STATUSRUNNING)
+					c.SetState(STATUSERRORED)
 					components, err := s.Receive(c)
 					Convey("It should return an error", func() {
-						So(err, ShouldBeNil)
+						So(err, ShouldNotBeNil)
 						So(len(components), ShouldEqual, 0)
 					})
 				})

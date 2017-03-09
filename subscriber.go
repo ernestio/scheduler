@@ -5,6 +5,7 @@
 package main
 
 import (
+	"errors"
 	"log"
 
 	"github.com/nats-io/nats"
@@ -30,8 +31,13 @@ func subscriber(msg *nats.Msg) {
 
 	scheduler.graph = m.getGraph()
 	processMessage(&scheduler, m)
+
 	if scheduler.Done() {
 		completed(scheduler.graph)
+	}
+
+	if scheduler.Errored() && !scheduler.Running() {
+		errored(scheduler.graph, errors.New("service provisioning has failed with an error"))
 	}
 }
 
