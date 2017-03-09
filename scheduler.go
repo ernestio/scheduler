@@ -100,7 +100,7 @@ func (s Scheduler) Errored() bool {
 // Running : returns true if one or more components are running/in progress or waiting
 func (s Scheduler) Running() bool {
 	for _, c := range s.graph.Changes {
-		if c.GetState() == STATUSRUNNING || c.GetState() == STATUSWAITING {
+		if c.GetState() == STATUSRUNNING {
 			return true
 		}
 	}
