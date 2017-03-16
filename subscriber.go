@@ -94,6 +94,10 @@ func storeComponent(c graph.Component) error {
 		}
 	}
 
+	if c.GetState() == STATUSERRORED {
+		return nil
+	}
+
 	// update the component
 	switch c.GetAction() {
 	case "create", "update", "get":
