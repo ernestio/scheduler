@@ -98,6 +98,9 @@ func storeComponent(c graph.Component) error {
 		return nil
 	}
 
+	gc := c.(*graph.GenericComponent)
+	serviceID := (*gc)["service"]
+
 	// update the component
 	switch c.GetAction() {
 	case "create", "update", "get":
@@ -106,6 +109,8 @@ func storeComponent(c graph.Component) error {
 		err = deleteComponent(c)
 	case "find":
 		for _, fc := range getQueryComponents(c) {
+			gfc := fc.(*graph.GenericComponent)
+			(*gfc)["service"] = serviceID
 			err = setComponent(fc)
 			if err != nil {
 				return err
