@@ -19,7 +19,7 @@ type service struct {
 func getMapping(id string) (map[string]interface{}, error) {
 	var mapping map[string]interface{}
 
-	msg, err := nc.Request("service.get.mapping", []byte(`{"id":"`+id+`"}`), time.Second)
+	msg, err := nc.Request("service.get.mapping", []byte(`{"id":"`+id+`"}`), time.Second*5)
 	if err != nil {
 		return mapping, err
 	}
@@ -40,7 +40,7 @@ func setMapping(id string, mapping []byte) error {
 		return err
 	}
 
-	_, err = nc.Request("service.set.mapping", data, time.Second)
+	_, err = nc.Request("service.set.mapping", data, time.Second*5)
 	if err != nil {
 		return err
 	}
@@ -54,7 +54,7 @@ func setComponent(c graph.Component) error {
 		return err
 	}
 
-	_, err = nc.Request("service.set.mapping.component", data, time.Second)
+	_, err = nc.Request("service.set.mapping.component", data, time.Second*5)
 
 	return err
 }
@@ -65,7 +65,7 @@ func deleteComponent(c graph.Component) error {
 		return err
 	}
 
-	_, err = nc.Request("service.del.mapping.component", data, time.Second)
+	_, err = nc.Request("service.del.mapping.component", data, time.Second*5)
 
 	return err
 }
@@ -76,7 +76,7 @@ func setChange(c graph.Component) error {
 		return err
 	}
 
-	_, err = nc.Request("service.set.mapping.change", data, time.Second)
+	_, err = nc.Request("service.set.mapping.change", data, time.Second*5)
 
 	return err
 }
@@ -87,7 +87,7 @@ func deleteChange(c graph.Component) error {
 		return err
 	}
 
-	_, err = nc.Request("service.del.mapping.change", data, time.Second)
+	_, err = nc.Request("service.del.mapping.change", data, time.Second*5)
 
 	return err
 }
