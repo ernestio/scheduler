@@ -46,9 +46,12 @@ func processMessage(scheduler *Scheduler, m *Message) {
 	component := m.getComponent()
 
 	if m.getType() == COMPONENTYPE {
-		err := storeComponent(component)
-		if err != nil {
-			errored(scheduler.graph, err)
+		c := graph.MapGenericComponent(m.data)
+		if c.GetState() == STATUSCOMPLETED {
+			err := storeComponent(component)
+			if err != nil {
+				errored(scheduler.graph, err)
+			}
 		}
 	}
 
