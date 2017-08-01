@@ -12,8 +12,8 @@ import (
 )
 
 type service struct {
-	ID      string `json:"id"`
-	Mapping string `json:"mapping"`
+	ID      string       `json:"id"`
+	Mapping *graph.Graph `json:"mapping"`
 }
 
 func getMapping(id string) (map[string]interface{}, error) {
@@ -29,10 +29,10 @@ func getMapping(id string) (map[string]interface{}, error) {
 	return mapping, err
 }
 
-func setMapping(id string, mapping []byte) error {
+func setMapping(id string, mapping *graph.Graph) error {
 	s := service{
 		ID:      id,
-		Mapping: string(mapping),
+		Mapping: mapping,
 	}
 
 	data, err := json.Marshal(s)
