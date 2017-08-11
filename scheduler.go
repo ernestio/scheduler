@@ -6,6 +6,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 
 	graph "gopkg.in/r3labs/graph.v2"
 )
@@ -68,6 +69,11 @@ func (s Scheduler) Receive(c graph.Component) ([]graph.Component, error) {
 	}
 
 	next := s.next(c)
+	fmt.Println("NEXT: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+	if len(next) < 1 {
+		data, _ := s.graph.ToJSON()
+		fmt.Println(string(data))
+	}
 	for _, c := range next {
 		c.SetState(STATUSRUNNING)
 	}
