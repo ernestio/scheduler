@@ -87,14 +87,7 @@ func (m *Message) getGraphFromGraph() *graph.Graph {
 
 	g.Action = m.subject
 
-	// save the Action
-	mapping, err := g.ToJSON()
-	if err != nil {
-		log.Println("Error: could not store mapping!" + err.Error())
-		return nil
-	}
-
-	err = setMapping(g.ID, mapping)
+	err = setMapping(g.ID, g)
 	if err != nil {
 		log.Println("Error: could not store mapping!" + err.Error())
 		return nil
