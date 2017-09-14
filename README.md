@@ -1,4 +1,8 @@
 ## Scheduler
+
+master:  [![CircleCI](https://circleci.com/gh/ernestio/scheduler/tree/master.svg?style=shield)](https://circleci.com/gh/ernestio/scheduler/tree/master)  
+develop: [![CircleCI](https://circleci.com/gh/ernestio/scheduler/tree/develop.svg?style=shield)](https://circleci.com/gh/ernestio/scheduler/tree/develop)
+
 Scheduler is a service to process actions associated with a given environment and it's components. It runs on top of nats.io.
 
 Scheduler provides several key features:
