@@ -135,7 +135,7 @@ func (m *Message) getServiceKey() string {
 // 'unsupported' will be returned as default value
 func (m *Message) getType() string {
 	switch m.subject {
-	case "build.create", "build.delete", "build.import", "build.patch":
+	case "build.create", "build.delete", "build.import", "build.patch", "build.sync":
 		return SERVICETYPE
 	}
 
