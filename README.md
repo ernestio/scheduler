@@ -40,7 +40,7 @@ The graph library utilised by the scheduler can be found at [graph library](http
 
 ### External Dependencies
 
-As scheduler does not provide any persistence system; it directly depends on service-store, and its communication is accomplished through nats.io.
+As scheduler does not provide any persistence system; it directly depends on [service-store](https://github.com/ernestio/service-store), and its communication is accomplished through nats.io.
 
 ### Input Mapping
 
