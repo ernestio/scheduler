@@ -8,12 +8,11 @@ lint:
 	gometalinter --config .linter.conf
 
 test:
-	go test -v ./... --cover
+	go test --cover -v $(go list ./... | grep -v /vendor/)
 
 deps:
-	go get -u gopkg.in/r3labs/graph.v2
-	go get -u github.com/tidwall/gjson
-	go get -u github.com/ernestio/ernest-config-client
+	go get -u github.com/golang/dep/cmd/dep
+	dep ensure
 
 dev-deps: deps
 	go get -u github.com/smartystreets/goconvey/convey
