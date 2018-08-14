@@ -77,14 +77,6 @@
   version = "v1.4.0"
 
 [[projects]]
-  digest = "1:041b5feb478117b749b789dff3ff6312ae652aa9460fb1cbc2cf59ea4fac59d5"
-  name = "github.com/nats-io/nats"
-  packages = ["."]
-  pruneopts = ""
-  revision = "d66cb54e6b7bdd93f0b28afc8450d84c780dfb68"
-  version = "v1.4.0"
-
-[[projects]]
   digest = "1:be61e8224b84064109eaba8157cbb4bbe6ca12443e182b6624fdfa1c0dcf53d9"
   name = "github.com/nats-io/nuid"
   packages = ["."]
@@ -94,11 +86,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:aa3a9fa294515d65b98021e01fd3fdee8574768fcd6031244ed90cbcd55d48ad"
+  digest = "1:c21600df12e3d20bfbbf7457d244d6c6d9690ca88ec64f6412977995c06cdda5"
   name = "github.com/r3labs/akira"
   packages = ["."]
   pruneopts = ""
-  revision = "0f4f76b1155209cbdd18da3693f44f4fc9f8275d"
+  revision = "8754167cb7b314671eb1e2abf2e9465f2e3d5ad4"
 
 [[projects]]
   digest = "1:d839084efa1e972636c1abd0cb34e1da41bfa19293fae45d9a41a5628dc798ff"
@@ -175,7 +167,7 @@
   analyzer-version = 1
   input-imports = [
     "github.com/ernestio/ernest-config-client",
-    "github.com/nats-io/nats",
+    "github.com/nats-io/go-nats",
     "github.com/smartystreets/goconvey/convey",
     "github.com/tidwall/gjson",
     "gopkg.in/r3labs/graph.v2",

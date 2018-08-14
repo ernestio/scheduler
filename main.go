@@ -10,7 +10,7 @@ import (
 	"runtime"
 
 	ecc "github.com/ernestio/ernest-config-client"
-	"github.com/nats-io/nats"
+	"github.com/nats-io/go-nats"
 )
 
 var nc *nats.Conn

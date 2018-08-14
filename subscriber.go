@@ -8,7 +8,7 @@ import (
 	"errors"
 	"log"
 
-	"github.com/nats-io/nats"
+	"github.com/nats-io/go-nats"
 	graph "gopkg.in/r3labs/graph.v2"
 )
 
